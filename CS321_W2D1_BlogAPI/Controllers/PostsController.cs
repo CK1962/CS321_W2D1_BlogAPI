@@ -15,9 +15,10 @@ namespace CS321_W2D1_BlogAPI.Controllers
         // Constructor
         // IPostService is automatically injected by the ASP.NET framework, if you've
         // configured it properly in Startup.ConfigureServices()
-        public PostsController(/* TODO: add a parameter of type IPostService */)
+        public PostsController(IPostService postService)
         {
             //TODO: keep a reference to the service so we can use it in methods below
+            _postService = postService;
         }
 
         // get all posts
@@ -25,7 +26,9 @@ namespace CS321_W2D1_BlogAPI.Controllers
         [HttpGet]
         public IActionResult Get()
         {
+            var post = _postService.GetAll();
             // TODO: return OK 200 status and list of posts
+            return Ok(post);
         }
 
         // get specific post by id
@@ -35,6 +38,7 @@ namespace CS321_W2D1_BlogAPI.Controllers
         {
             // look up post by id
             // TODO: use _postsService to get post by id
+            var post = _postService.Get(id);
 
             // if not found, return 404 NotFound 
             if (post == null) return NotFound();
@@ -50,6 +54,7 @@ namespace CS321_W2D1_BlogAPI.Controllers
         {
             // add the new post
             // TODO: use _postService to add newPost
+            _postService.Add(newPost);
 
             // return a 201 Created status. This will also add a "location" header
             // with the URI of the new post. E.g., /api/posts/99, if the new is 99
@@ -61,7 +66,7 @@ namespace CS321_W2D1_BlogAPI.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] Post updatedPost)
         {
-            Post post;
+            var post = _postService.Update(updatedPost);
             // TODO: use _postService to update post. store returned Post in the post variable.
             if (post == null) return NotFound();
             return Ok(post);
@@ -73,7 +78,10 @@ namespace CS321_W2D1_BlogAPI.Controllers
         public IActionResult Delete(int id)
         {
             // TODO: use _postService to get post by id
-            if (post == null) return NotFound();
+            var post = _postService.Get(id);
+           
+            if (post == null) return NotFound(); 
+            _postService.Remove(post);
             // TODO: use _postService to update post
             return NoContent();
         }
