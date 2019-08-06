@@ -32,10 +32,21 @@ namespace CS321_W2D1_BlogAPI.Tests
             // arrange
             var controller = new PostsController(new PostService());
 
+
             // act - id 2 is in the seed data, should exist
             var result = controller.Get(2);
 
             // assert
+            Assert.IsType<OkObjectResult>(result);
+        }
+        public void Test_UpdatedPost()
+        {
+            var controller = new PostsController(new PostService());
+            var post = new Post;
+            post.Id = 3;
+            post.Title = "Test";
+            post.Body = "Test Body";
+            var result = controller.Put(3, post);
             Assert.IsType<OkObjectResult>(result);
         }
     }

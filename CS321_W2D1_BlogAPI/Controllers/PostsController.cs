@@ -26,9 +26,8 @@ namespace CS321_W2D1_BlogAPI.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var post = _postService.GetAll();
+            return Ok( _postService.GetAll());
             // TODO: return OK 200 status and list of posts
-            return Ok(post);
         }
 
         // get specific post by id
@@ -52,10 +51,16 @@ namespace CS321_W2D1_BlogAPI.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] Post newPost)
         {
-            // add the new post
-            // TODO: use _postService to add newPost
-            _postService.Add(newPost);
-
+            try
+            {
+                // add the new post
+                // TODO: use _postService to add newPost
+                _postService.Add(newPost);
+            }
+            catch (System.Exception ex)
+            {
+                ModelState.AddModelError("AddPost", ex.message);
+            }
             // return a 201 Created status. This will also add a "location" header
             // with the URI of the new post. E.g., /api/posts/99, if the new is 99
             return CreatedAtAction("Get", new { Id = newPost.Id }, newPost);
@@ -66,10 +71,10 @@ namespace CS321_W2D1_BlogAPI.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] Post updatedPost)
         {
-            var post = _postService.Update(updatedPost);
+           Post post = _postService.Get(id);
             // TODO: use _postService to update post. store returned Post in the post variable.
             if (post == null) return NotFound();
-            return Ok(post);
+            return Ok(_postService.Update(updatedPost));
         }
 
         // delete an existing post
