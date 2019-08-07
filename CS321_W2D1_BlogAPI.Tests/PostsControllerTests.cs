@@ -3,6 +3,7 @@ using Xunit;
 using CS321_W2D1_BlogAPI.Controllers;
 using CS321_W2D1_BlogAPI.Services;
 using Microsoft.AspNetCore.Mvc;
+using CS321_W2D1_BlogAPI.Models;
 
 namespace CS321_W2D1_BlogAPI.Tests
 {
@@ -42,7 +43,7 @@ namespace CS321_W2D1_BlogAPI.Tests
         public void Test_UpdatedPost()
         {
             var controller = new PostsController(new PostService());
-            var post = new Post;
+            var post = new Post();
             post.Id = 3;
             post.Title = "Test";
             post.Body = "Test Body";
