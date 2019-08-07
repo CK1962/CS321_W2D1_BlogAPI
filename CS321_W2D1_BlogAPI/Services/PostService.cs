@@ -54,8 +54,7 @@ namespace CS321_W2D1_BlogAPI.Services
         {
             // get the Post object in the current list with this id 
             // TODO: find the post to update in the list, using updatedPost.Id, and assign to currentPost
-            var currentPost = _posts.FirstOrDefault(p => p.Id == updatedPost.id);
-
+            var currentPost = this.Get(updatedPost.Id);
             // return null if the Post to update isn't found
             if (currentPost == null) return null;
 
